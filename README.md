@@ -345,6 +345,6 @@ For issues or questions:
 
 ---
 
-**Built with ❤️ by Sanim Ahmed**
+**Built ❤️ by Sanim Ahmed**
 
 Last Updated: November 7, 2025
