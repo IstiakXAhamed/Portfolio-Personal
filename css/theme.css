@@ -1,0 +1,347 @@
+/* ===================================
+   ADVANCED THEME SYSTEM
+   =================================== */
+
+:root {
+  /* === Color Palette - Light Theme (Default) === */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --bg-card: #ffffff;
+  --bg-header: rgba(255, 255, 255, 0.95);
+  
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a5568;
+  --text-tertiary: #718096;
+  --text-inverse: #ffffff;
+  
+  --accent-primary: #1788ae;
+  --accent-secondary: #1595b6;
+  --accent-tertiary: #1f2667;
+  --accent-yellow: #f59e0b;
+  --accent-orange: #fc815c;
+  --accent-teal: #47afa1;
+  --accent-purple: #8b5cf6;
+  --accent-pink: #ec4899;
+  
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e0;
+  --divider-color: rgba(0, 0, 0, 0.1);
+  
+  /* === Shadows === */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 60px rgba(23, 136, 174, 0.3);
+  --shadow-glow-hover: 0 0 80px rgba(23, 136, 174, 0.5);
+  
+  /* === Gradients === */
+  --gradient-primary: linear-gradient(135deg, #1595b6 0%, #1f2667 100%);
+  --gradient-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-warm: linear-gradient(135deg, #f59e0b 0%, #fc815c 100%);
+  --gradient-cool: linear-gradient(135deg, #47afa1 0%, #1788ae 100%);
+  --gradient-overlay: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.05) 100%);
+  
+  /* === Matter.js Particles === */
+  --particle-primary: #e2e8f0;
+  --particle-secondary: #cbd5e0;
+  --particle-tertiary: #a0aec0;
+  --particle-stroke: #718096;
+  
+  /* === Misc === */
+  --blur-backdrop: blur(10px);
+  --transition-speed: 0.3s;
+  --transition-curve: cubic-bezier(0.4, 0, 0.2, 1);
+  --border-radius: 12px;
+  --border-radius-lg: 20px;
+}
+
+/* === Dark Theme === */
+[data-theme="dark"] {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --bg-card: #151515;
+  --bg-header: rgba(17, 17, 17, 0.95);
+  
+  --text-primary: #f7fafc;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #cbd5e0;
+  --text-inverse: #1a1a1a;
+  
+  --accent-primary: #23b9eb;
+  --accent-secondary: #1788ae;
+  --accent-tertiary: #3b4db8;
+  --accent-yellow: #fbbf24;
+  --accent-orange: #ff8a65;
+  --accent-teal: #5eead4;
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  
+  --border-color: #2d3748;
+  --border-hover: #4a5568;
+  --divider-color: rgba(255, 255, 255, 0.1);
+  
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 60px rgba(35, 185, 235, 0.4);
+  --shadow-glow-hover: 0 0 80px rgba(35, 185, 235, 0.6);
+  
+  --gradient-primary: linear-gradient(135deg, #23b9eb 0%, #3b4db8 100%);
+  --gradient-secondary: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+  --gradient-warm: linear-gradient(135deg, #fbbf24 0%, #ff8a65 100%);
+  --gradient-cool: linear-gradient(135deg, #5eead4 0%, #23b9eb 100%);
+  --gradient-overlay: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  
+  --particle-primary: #222222;
+  --particle-secondary: #333333;
+  --particle-tertiary: #444444;
+  --particle-stroke: #555555;
+}
+
+/* === Smooth Theme Transitions === */
+* {
+  transition: background-color var(--transition-speed) var(--transition-curve),
+              color var(--transition-speed) var(--transition-curve),
+              border-color var(--transition-speed) var(--transition-curve),
+              box-shadow var(--transition-speed) var(--transition-curve);
+}
+
+/* Exclude animations and transforms from theme transition */
+*:not(.no-theme-transition) {
+  transition-property: background-color, color, border-color, box-shadow;
+}
+
+/* === Base Theme Styles === */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* === Scroll Progress Bar === */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background: var(--gradient-primary);
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+  box-shadow: 0 0 10px var(--accent-primary);
+}
+
+/* === Back to Top Button === */
+#back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-lg);
+}
+
+#back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#back-to-top:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: var(--shadow-xl);
+}
+
+/* === Loading Screen === */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Typing Animation === */
+.typing-animation {
+  display: inline-block;
+  border-right: 3px solid var(--accent-primary);
+  animation: blink 0.7s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+/* === Fade In Animations === */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* === Floating Animation === */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* === Pulse Animation === */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* === Scale on Hover === */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* === Glow Effect === */
+.glow {
+  box-shadow: var(--shadow-glow);
+  transition: box-shadow 0.3s ease;
+}
+
+.glow:hover {
+  box-shadow: var(--shadow-glow-hover);
+}
+
+/* === Gradient Text === */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === Glass Morphism === */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: var(--blur-backdrop);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .glass {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === Smooth Scroll === */
+html {
+  scroll-behavior: smooth;
+}
+
+/* === Custom Scrollbar === */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* === Selection === */
+::selection {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+}
+
+/* === Focus Visible === */
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* === Print Styles === */
+@media print {
+  #back-to-top,
+  #scroll-progress,
+  #loading-screen,
+  .no-print {
+    display: none !important;
+  }
+}

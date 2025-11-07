@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects Gallery - Sanim Ahmed</title>
+    <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/advanced-themes.css" />
+    <style>
+      body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: "Nunito", sans-serif;
+        overflow-x: hidden;
+      }
+
+      .projects-hero {
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary) 0%,
+          var(--bg-primary) 100%
+        );
+        position: relative;
+      }
+
+      .filter-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 30px 0;
+      }
+
+      .filter-btn {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 2px solid var(--accent-secondary);
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: var(--gradient-primary);
+        color: white;
+        border-color: var(--accent-primary);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+        margin: 40px 0;
+      }
+
+      .project-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 2px solid var(--accent-secondary);
+        transition: all 0.4s ease;
+        cursor: pointer;
+        position: relative;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        height: 450px;
+      }
+
+      .project-card:hover {
+        transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+        box-shadow: var(--shadow-glow), 0 20px 40px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-primary);
+      }
+
+      .project-card.flipped .card-front {
+        transform: rotateY(180deg);
+      }
+
+      .project-card.flipped .card-back {
+        transform: rotateY(0deg);
+      }
+
+      .card-front,
+      .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        transition: transform 0.6s ease;
+      }
+
+      .card-back {
+        transform: rotateY(-180deg);
+        background: var(--bg-card);
+        padding: 30px;
+        overflow-y: auto;
+      }
+
+      .project-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: linear-gradient(
+          135deg,
+          var(--accent-primary),
+          var(--accent-secondary)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+      }
+
+      .project-content {
+        padding: 25px;
+      }
+
+      .project-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: var(--accent-primary);
+      }
+
+      .project-description {
+        opacity: 0.8;
+        margin-bottom: 15px;
+        line-height: 1.6;
+      }
+
+      .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 15px 0;
+      }
+
+      .tech-tag {
+        background: var(--accent-primary);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .project-links {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .project-link {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .link-demo {
+        background: var(--gradient-primary);
+        color: white;
+      }
+
+      .link-github {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 2px solid var(--accent-secondary);
+      }
+
+      .link-demo:hover,
+      .link-github:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .search-container {
+        max-width: 600px;
+        margin: 20px auto;
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        border: 2px solid var(--accent-secondary);
+        border-radius: 50px;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent-primary);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent-primary);
+        font-size: 1.5rem;
+      }
+
+      .stats-bar {
+        background: var(--bg-card);
+        padding: 20px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: space-around;
+        margin: 30px 0;
+        border: 2px solid var(--accent-tertiary);
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .stat-label {
+        opacity: 0.8;
+        margin-top: 5px;
+      }
+
+      .flip-indicator {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: var(--accent-primary);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        z-index: 10;
+      }
+
+      .github-stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--accent-tertiary);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+      }
+
+      @media (max-width: 768px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .filter-buttons {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Theme Picker -->
+    <div class="theme-picker">
+      <div class="theme-picker-toggle" onclick="toggleThemePicker()">🎨</div>
+      <div class="theme-option theme-dark" data-theme="dark" title="Dark"></div>
+      <div
+        class="theme-option theme-light"
+        data-theme="light"
+        title="Light"
+      ></div>
+      <div
+        class="theme-option theme-cyberpunk"
+        data-theme="cyberpunk"
+        title="Cyberpunk"
+      ></div>
+      <div
+        class="theme-option theme-ocean"
+        data-theme="ocean"
+        title="Ocean"
+      ></div>
+      <div
+        class="theme-option theme-forest"
+        data-theme="forest"
+        title="Forest"
+      ></div>
+      <div
+        class="theme-option theme-sunset"
+        data-theme="sunset"
+        title="Sunset"
+      ></div>
+      <div class="theme-option theme-neon" data-theme="neon" title="Neon"></div>
+      <div
+        class="theme-option theme-dracula"
+        data-theme="dracula"
+        title="Dracula"
+      ></div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="projects-hero">
+      <div class="text-center">
+        <h1
+          class="text-6xl font-bold mb-4"
+          style="color: var(--accent-primary)"
+        >
+          My Projects
+        </h1>
+        <p class="text-2xl opacity-80">
+          Click cards to flip and see more details!
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-20">
+      <!-- Statistics Bar -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-number" id="totalProjects">0</div>
+          <div class="stat-label">Total Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="webApps">0</div>
+          <div class="stat-label">Web Apps</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="mobileApps">0</div>
+          <div class="stat-label">Mobile Apps</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="designs">0</div>
+          <div class="stat-label">Designs</div>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search projects..."
+        />
+        <span class="search-icon">🔍</span>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">
+          All Projects
+        </button>
+        <button class="filter-btn" data-filter="web">Web Apps</button>
+        <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+        <button class="filter-btn" data-filter="design">Designs</button>
+        <button class="filter-btn" data-filter="featured">⭐ Featured</button>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Projects will be dynamically inserted here -->
+      </div>
+
+      <!-- Back to Portfolio -->
+      <div class="text-center mt-20">
+        <a
+          href="../index.html"
+          class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-12 py-4 rounded-full text-xl font-bold hover:scale-110 transition-transform"
+          style="text-decoration: none"
+        >
+          ← Back to Main Portfolio
+        </a>
+      </div>
+    </div>
+
+    <script src="../js/enhancements.js"></script>
+    <script src="../js/advanced-animations.js"></script>
+    <script src="../js/accessibility.js"></script>
+    <script>
+      // Projects Data
+      const projects = [
+        {
+          id: 1,
+          title: "E-Commerce Platform",
+          category: "web",
+          description:
+            "Full-stack e-commerce solution with cart, payments, and admin dashboard.",
+          fullDescription:
+            "A comprehensive e-commerce platform built with MERN stack featuring user authentication, product management, shopping cart, Stripe payment integration, order tracking, and a powerful admin dashboard with analytics.",
+          tech: ["React", "Node.js", "MongoDB", "Express", "Stripe"],
+          icon: "🛒",
+          stars: 45,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/ecommerce",
+          featured: true,
+        },
+        {
+          id: 2,
+          title: "Social Media Dashboard",
+          category: "web",
+          description:
+            "Real-time social platform with chat, posts, and notifications.",
+          fullDescription:
+            "A modern social media dashboard with real-time messaging using Socket.io, post creation and sharing, likes and comments system, user profiles, friend connections, and push notifications.",
+          tech: ["React", "Socket.io", "Node.js", "MongoDB"],
+          icon: "💬",
+          stars: 38,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/social",
+          featured: true,
+        },
+        {
+          id: 3,
+          title: "Task Management App",
+          category: "web",
+          description:
+            "Collaborative task manager with drag-drop and team features.",
+          fullDescription:
+            "A Trello-like task management application with drag-and-drop functionality, team collaboration, task assignments, deadline tracking, comments, attachments, and progress visualization.",
+          tech: ["Next.js", "PostgreSQL", "Prisma", "Tailwind"],
+          icon: "✅",
+          stars: 52,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/taskmanager",
+          featured: true,
+        },
+        {
+          id: 4,
+          title: "Weather App",
+          category: "web",
+          description:
+            "Beautiful weather app with forecasts and location services.",
+          fullDescription:
+            "A sleek weather application that provides real-time weather data, 7-day forecasts, location-based services, weather alerts, and beautiful weather animations based on conditions.",
+          tech: ["React", "OpenWeather API", "CSS3"],
+          icon: "🌤️",
+          stars: 28,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/weather",
+          featured: false,
+        },
+        {
+          id: 5,
+          title: "Fitness Tracker",
+          category: "mobile",
+          description:
+            "Mobile fitness app with workout tracking and progress charts.",
+          fullDescription:
+            "A comprehensive fitness tracking mobile application with workout logging, calorie counter, progress charts, goal setting, exercise database, and social sharing features.",
+          tech: ["React Native", "Firebase", "Chart.js"],
+          icon: "💪",
+          stars: 34,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/fitness",
+          featured: false,
+        },
+        {
+          id: 6,
+          title: "Recipe Finder",
+          category: "web",
+          description:
+            "Search and save recipes with nutrition info and cooking times.",
+          fullDescription:
+            "A recipe discovery platform that allows users to search recipes by ingredients, dietary preferences, save favorites, view nutritional information, and follow step-by-step cooking instructions.",
+          tech: ["React", "Spoonacular API", "Redux"],
+          icon: "🍳",
+          stars: 22,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/recipes",
+          featured: false,
+        },
+        {
+          id: 7,
+          title: "Portfolio Design",
+          category: "design",
+          description:
+            "Modern portfolio design with animations and interactions.",
+          fullDescription:
+            "A stunning portfolio design concept featuring modern UI/UX principles, smooth animations, interactive elements, and responsive layouts optimized for all devices.",
+          tech: ["Figma", "Adobe XD", "CSS"],
+          icon: "🎨",
+          stars: 19,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/portfolio-design",
+          featured: false,
+        },
+        {
+          id: 8,
+          title: "Blog Platform",
+          category: "web",
+          description: "Full-featured blogging platform with markdown support.",
+          fullDescription:
+            "A complete blogging platform with markdown editor, syntax highlighting for code, categories and tags, comments system, user authentication, and SEO optimization.",
+          tech: ["Next.js", "MDX", "MongoDB", "NextAuth"],
+          icon: "📝",
+          stars: 41,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/blog",
+          featured: true,
+        },
+        {
+          id: 9,
+          title: "Music Player",
+          category: "web",
+          description: "Spotify-like music player with playlists and controls.",
+          fullDescription:
+            "A feature-rich music player application with playlist management, audio controls, equalizer, lyrics display, music visualization, and integration with music APIs.",
+          tech: ["React", "Web Audio API", "Styled Components"],
+          icon: "🎵",
+          stars: 30,
+          demo: "https://demo.example.com",
+          github: "https://github.com/sanimahmed/music",
+          featured: false,
+        },
+      ];
+
+      // Initialize
+      let currentFilter = "all";
+      let searchQuery = "";
+
+      function renderProjects() {
+        const grid = document.getElementById("projectsGrid");
+        const filteredProjects = projects.filter((project) => {
+          const matchesFilter =
+            currentFilter === "all" ||
+            project.category === currentFilter ||
+            (currentFilter === "featured" && project.featured);
+          const matchesSearch =
+            project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            project.description
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase());
+          return matchesFilter && matchesSearch;
+        });
+
+        grid.innerHTML = filteredProjects
+          .map(
+            (project) => `
+                <div class="project-card fade-in" data-category="${
+                  project.category
+                }" onclick="flipCard(${project.id})">
+                    <div class="card-front">
+                        <div class="project-image">
+                            ${project.icon}
+                        </div>
+                        <div class="project-content">
+                            <div class="project-title">${project.title}</div>
+                            <div class="project-description">${
+                              project.description
+                            }</div>
+                            <div class="tech-tags">
+                                ${project.tech
+                                  .map(
+                                    (t) => `<span class="tech-tag">${t}</span>`
+                                  )
+                                  .join("")}
+                            </div>
+                            <div class="github-stars">
+                                ⭐ ${project.stars} stars
+                            </div>
+                        </div>
+                        <div class="flip-indicator">Click to flip →</div>
+                    </div>
+                    <div class="card-back">
+                        <h3 class="text-2xl font-bold mb-4" style="color: var(--accent-primary);">${
+                          project.title
+                        }</h3>
+                        <p class="mb-4">${project.fullDescription}</p>
+                        <div class="tech-tags mb-4">
+                            ${project.tech
+                              .map((t) => `<span class="tech-tag">${t}</span>`)
+                              .join("")}
+                        </div>
+                        <div class="project-links">
+                            <a href="${
+                              project.demo
+                            }" target="_blank" class="project-link link-demo">
+                                🚀 Live Demo
+                            </a>
+                            <a href="${
+                              project.github
+                            }" target="_blank" class="project-link link-github">
+                                💻 GitHub
+                            </a>
+                        </div>
+                        <div class="flip-indicator" style="bottom: auto; top: 10px;">← Click to flip back</div>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+
+        updateStats();
+      }
+
+      function updateStats() {
+        const webCount = projects.filter((p) => p.category === "web").length;
+        const mobileCount = projects.filter(
+          (p) => p.category === "mobile"
+        ).length;
+        const designCount = projects.filter(
+          (p) => p.category === "design"
+        ).length;
+
+        animateValue("totalProjects", 0, projects.length, 1000);
+        animateValue("webApps", 0, webCount, 1000);
+        animateValue("mobileApps", 0, mobileCount, 1000);
+        animateValue("designs", 0, designCount, 1000);
+      }
+
+      function animateValue(id, start, end, duration) {
+        const element = document.getElementById(id);
+        const range = end - start;
+        const increment = range / (duration / 16);
+        let current = start;
+
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= end) {
+            current = end;
+            clearInterval(timer);
+          }
+          element.textContent = Math.floor(current);
+        }, 16);
+      }
+
+      function flipCard(projectId) {
+        const cards = document.querySelectorAll(".project-card");
+        const targetCard = cards[projectId - 1];
+        targetCard.classList.toggle("flipped");
+      }
+
+      // Filter functionality
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          currentFilter = btn.getAttribute("data-filter");
+          renderProjects();
+        });
+      });
+
+      // Search functionality
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        renderProjects();
+      });
+
+      // Initialize
+      renderProjects();
+    </script>
+  </body>
+</html>

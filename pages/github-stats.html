@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Stats - Live Integration</title>
+    <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/advanced-themes.css" />
+    <style>
+      body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: "Nunito", sans-serif;
+        overflow-x: hidden;
+        padding: 20px;
+      }
+
+      .hero-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary) 0%,
+          var(--bg-primary) 100%
+        );
+        border-radius: 20px;
+        margin-bottom: 40px;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: bold;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        opacity: 0.8;
+      }
+
+      .refresh-button {
+        margin: 30px auto;
+        padding: 15px 40px;
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .refresh-button:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .username-input-section {
+        text-align: center;
+        margin: 30px 0;
+        padding: 25px;
+        background: var(--bg-card);
+        border-radius: 15px;
+        border: 2px solid var(--accent-tertiary);
+      }
+
+      .username-input {
+        padding: 12px 20px;
+        border: 2px solid var(--accent-secondary);
+        border-radius: 25px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: 1rem;
+        min-width: 300px;
+        margin-right: 10px;
+      }
+
+      .username-input:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .load-button {
+        padding: 12px 30px;
+        background: var(--accent-primary);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .load-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .back-link {
+        display: inline-block;
+        margin: 20px 0;
+        padding: 12px 30px;
+        background: var(--bg-card);
+        border: 2px solid var(--accent-secondary);
+        border-radius: 25px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .back-link:hover {
+        border-color: var(--accent-primary);
+        transform: translateX(-5px);
+      }
+
+      .info-box {
+        background: var(--bg-card);
+        border-left: 4px solid var(--accent-primary);
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+      }
+
+      .info-box h3 {
+        color: var(--accent-primary);
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Theme Picker -->
+    <div class="theme-picker">
+      <div class="theme-picker-toggle" onclick="toggleThemePicker()">🎨</div>
+      <div class="theme-option theme-dark" data-theme="dark" title="Dark"></div>
+      <div
+        class="theme-option theme-light"
+        data-theme="light"
+        title="Light"
+      ></div>
+      <div
+        class="theme-option theme-cyberpunk"
+        data-theme="cyberpunk"
+        title="Cyberpunk"
+      ></div>
+      <div
+        class="theme-option theme-ocean"
+        data-theme="ocean"
+        title="Ocean"
+      ></div>
+      <div
+        class="theme-option theme-forest"
+        data-theme="forest"
+        title="Forest"
+      ></div>
+      <div
+        class="theme-option theme-sunset"
+        data-theme="sunset"
+        title="Sunset"
+      ></div>
+      <div class="theme-option theme-neon" data-theme="neon" title="Neon"></div>
+      <div
+        class="theme-option theme-dracula"
+        data-theme="dracula"
+        title="Dracula"
+      ></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+      <a href="../index.html" class="back-link">← Back to Portfolio</a>
+
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <h1 class="hero-title">🔥 Live GitHub Integration</h1>
+        <p class="hero-subtitle">Real-time data from GitHub API</p>
+        <button class="refresh-button" onclick="refreshGitHubData()">
+          🔄 Refresh Data
+        </button>
+      </div>
+
+      <!-- Username Input Section -->
+      <div class="username-input-section">
+        <h3 style="margin-bottom: 15px; color: var(--accent-primary)">
+          View Any GitHub User's Stats
+        </h3>
+        <input
+          type="text"
+          id="usernameInput"
+          class="username-input"
+          placeholder="Enter GitHub username"
+          value="sanimahmed"
+        />
+        <button class="load-button" onclick="loadUserStats()">
+          Load Stats
+        </button>
+      </div>
+
+      <!-- Info Box -->
+      <div class="info-box">
+        <h3>📊 What's Included:</h3>
+        <ul style="line-height: 2; opacity: 0.9">
+          <li>✅ Real-time GitHub API integration</li>
+          <li>✅ User profile overview with stats</li>
+          <li>✅ Language breakdown with interactive pie chart</li>
+          <li>✅ 12-month contribution heatmap</li>
+          <li>✅ Top repositories showcase</li>
+          <li>✅ Live data with smart caching</li>
+          <li>✅ Support for any GitHub username</li>
+        </ul>
+      </div>
+
+      <!-- GitHub Stats Container -->
+      <div id="github-stats" data-username="sanimahmed"></div>
+
+      <!-- Additional Features Info -->
+      <div class="info-box" style="margin-top: 40px">
+        <h3>🚀 Features:</h3>
+        <ul style="line-height: 2; opacity: 0.9">
+          <li>
+            <strong>Smart Caching:</strong> Data is cached for 10 minutes to
+            avoid rate limits
+          </li>
+          <li>
+            <strong>Responsive Design:</strong> Works perfectly on all devices
+          </li>
+          <li><strong>Theme Aware:</strong> Adapts to your selected theme</li>
+          <li>
+            <strong>Real-time Updates:</strong> Click refresh to get latest data
+          </li>
+          <li>
+            <strong>Error Handling:</strong> Falls back to demo data if API
+            fails
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="../js/enhancements.js"></script>
+    <script src="../js/advanced-animations.js"></script>
+    <script src="../js/github-integration.js"></script>
+    <script src="../js/accessibility.js"></script>
+    <script>
+      function refreshGitHubData() {
+        const username =
+          document.getElementById("usernameInput").value || "sanimahmed";
+        // Clear cache
+        const githubDisplay = new GitHubStatsDisplay("github-stats", username);
+      }
+
+      function loadUserStats() {
+        const username = document.getElementById("usernameInput").value.trim();
+        if (!username) {
+          alert("Please enter a GitHub username");
+          return;
+        }
+
+        // Update data-username attribute
+        document
+          .getElementById("github-stats")
+          .setAttribute("data-username", username);
+
+        // Reload stats
+        new GitHubStatsDisplay("github-stats", username);
+      }
+
+      // Handle Enter key on input
+      document
+        .getElementById("usernameInput")
+        .addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            loadUserStats();
+          }
+        });
+    </script>
+  </body>
+</html>

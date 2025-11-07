@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terminal - Sanim Ahmed</title>
+    <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/advanced-themes.css" />
+    <style>
+      body {
+        background: #0a0a0a;
+        color: #00ff00;
+        font-family: "Courier New", monospace;
+        overflow: hidden;
+        height: 100vh;
+      }
+
+      .terminal-container {
+        width: 90%;
+        max-width: 1200px;
+        height: 80vh;
+        margin: 5vh auto;
+        background: #000;
+        border: 2px solid #00ff00;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .terminal-header {
+        background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+        padding: 10px 20px;
+        border-bottom: 1px solid #00ff00;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .terminal-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .terminal-btn {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .btn-close {
+        background: #ff5f56;
+      }
+      .btn-minimize {
+        background: #ffbd2e;
+      }
+      .btn-maximize {
+        background: #27c93f;
+      }
+
+      .terminal-title {
+        color: #00ff00;
+        font-size: 14px;
+        flex-grow: 1;
+        text-align: center;
+      }
+
+      .terminal-body {
+        flex-grow: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #000;
+      }
+
+      .terminal-line {
+        margin: 5px 0;
+        line-height: 1.6;
+      }
+
+      .terminal-prompt {
+        color: #00ff00;
+        font-weight: bold;
+      }
+
+      .terminal-input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #00ff00;
+        font-family: "Courier New", monospace;
+        font-size: 16px;
+        width: calc(100% - 100px);
+        caret-color: #00ff00;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 10px;
+        height: 20px;
+        background: #00ff00;
+        animation: blink 1s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .command-output {
+        color: #00ff00;
+        margin: 10px 0;
+        padding: 10px;
+        white-space: pre-wrap;
+      }
+
+      .error {
+        color: #ff0000;
+      }
+
+      .success {
+        color: #00ff00;
+      }
+
+      .info {
+        color: #00d4ff;
+      }
+
+      .warning {
+        color: #ffff00;
+      }
+
+      .ascii-art {
+        color: #00ff00;
+        line-height: 1.2;
+      }
+
+      .matrix-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.1;
+      }
+
+      .help-table {
+        border-collapse: collapse;
+        margin: 10px 0;
+      }
+
+      .help-table td {
+        padding: 5px 15px;
+      }
+
+      .help-table td:first-child {
+        color: #00d4ff;
+        font-weight: bold;
+      }
+
+      .loading {
+        display: inline-block;
+        animation: loading 1.5s infinite;
+      }
+
+      @keyframes loading {
+        0%,
+        100% {
+          content: "|";
+        }
+        25% {
+          content: "/";
+        }
+        50% {
+          content: "-";
+        }
+        75% {
+          content: "\\";
+        }
+      }
+    </style>
+    <script src="../js/enhancements.js" defer></script>
+    <script src="../js/advanced-animations.js" defer></script>
+  </head>
+  <body>
+    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+
+    <div class="terminal-container">
+      <div class="terminal-header">
+        <div class="terminal-buttons">
+          <div class="terminal-btn btn-close" onclick="closeTerminal()"></div>
+          <div class="terminal-btn btn-minimize"></div>
+          <div class="terminal-btn btn-maximize"></div>
+        </div>
+        <div class="terminal-title">sanim@portfolio:~$</div>
+        <div style="width: 60px"></div>
+      </div>
+
+      <div class="terminal-body" id="terminalBody">
+        <div class="ascii-art">
+          ╔═══════════════════════════════════════════════════════════╗ ║ ____ _
+          _ _ ║ ║ / ___| __ _ _ __ (_)_ __ ___ / \ | |__ _ __ ___ ║ ║ \___ \ /
+          _` | '_ \| | '_ ` _ \ / _ \ | '_ \| '_ ` _ \ ║ ║ ___) | (_| | | | | |
+          | | | | | / ___ \| | | | | | | | | ║ ║ |____/ \__,_|_| |_|_|_| |_|
+          |_|/_/ \_\_| |_|_| |_| |_| ║ ║ ║ ║ Welcome to Sanim's Portfolio
+          Terminal ║ ║ MERN Stack Developer ║
+          ╚═══════════════════════════════════════════════════════════╝
+        </div>
+        <div class="terminal-line">
+          <span class="info">Type 'help' to see available commands</span>
+        </div>
+        <div class="terminal-line">
+          <span class="warning">Tip: Try 'matrix' for a surprise!</span>
+        </div>
+        <br />
+        <div id="output"></div>
+        <div class="terminal-line" id="inputLine">
+          <span class="terminal-prompt">visitor@portfolio:~$ </span>
+          <input
+            type="text"
+            id="terminalInput"
+            class="terminal-input"
+            autofocus
+            autocomplete="off"
+          />
+          <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const output = document.getElementById("output");
+      const terminalInput = document.getElementById("terminalInput");
+      const terminalBody = document.getElementById("terminalBody");
+      let commandHistory = [];
+      let historyIndex = -1;
+
+      const commands = {
+        help: () => `
+<table class="help-table">
+    <tr><td>help</td><td>- Show this help message</td></tr>
+    <tr><td>about</td><td>- Learn about Sanim Ahmed</td></tr>
+    <tr><td>skills</td><td>- Display technical skills</td></tr>
+    <tr><td>projects</td><td>- Show recent projects</td></tr>
+    <tr><td>contact</td><td>- Get contact information</td></tr>
+    <tr><td>experience</td><td>- View work experience</td></tr>
+    <tr><td>education</td><td>- Display education background</td></tr>
+    <tr><td>social</td><td>- Show social media links</td></tr>
+    <tr><td>clear</td><td>- Clear terminal screen</td></tr>
+    <tr><td>matrix</td><td>- Enter the Matrix</td></tr>
+    <tr><td>hack</td><td>- Simulate hacking sequence</td></tr>
+    <tr><td>ls</td><td>- List portfolio sections</td></tr>
+    <tr><td>whoami</td><td>- Display current user</td></tr>
+    <tr><td>date</td><td>- Show current date and time</td></tr>
+    <tr><td>exit</td><td>- Return to main portfolio</td></tr>
+</table>`,
+
+        about: () => `
+<span class="info">╔══════════════════════════════════════════╗
+║         ABOUT SANIM AHMED                ║
+╚══════════════════════════════════════════╝</span>
+
+<span class="success">Name:</span> Sanim Ahmed
+<span class="success">Role:</span> MERN Stack Developer
+<span class="success">Location:</span> Dhaka, Bangladesh
+<span class="success">Experience:</span> 3+ Years
+
+<span class="info">Bio:</span>
+Passionate full-stack developer specializing in MERN stack.
+I build modern, responsive, and user-friendly web applications.
+Always eager to learn new technologies and solve complex problems.
+
+<span class="success">Philosophy:</span>
+"Code is like humor. When you have to explain it, it's bad."`,
+
+        skills: () => `
+<span class="info">╔══════════════════════════════════════════╗
+║           TECHNICAL SKILLS               ║
+╚══════════════════════════════════════════╝</span>
+
+<span class="success">Frontend:</span>
+  ├─ React.js       ████████████████░░ 95%
+  ├─ JavaScript     ███████████████░░░ 90%
+  ├─ HTML/CSS       ██████████████████ 98%
+  ├─ Tailwind CSS   ████████████████░░ 92%
+  └─ TypeScript     ███████████████░░░ 85%
+
+<span class="success">Backend:</span>
+  ├─ Node.js        ████████████████░░ 92%
+  ├─ Express.js     ████████████████░░ 90%
+  ├─ MongoDB        ████████████████░░ 88%
+  └─ REST APIs      ████████████████░░ 95%
+
+<span class="success">Tools & Others:</span>
+  ├─ Git/GitHub     ████████████████░░ 93%
+  ├─ VS Code        ██████████████████ 98%
+  ├─ Figma          ███████████████░░░ 85%
+  └─ npm/yarn       ████████████████░░ 90%`,
+
+        projects: () => `
+<span class="info">╔══════════════════════════════════════════╗
+║          RECENT PROJECTS                 ║
+╚══════════════════════════════════════════╝</span>
+
+<span class="success">[1] E-Commerce Platform</span>
+    Tech: MERN Stack, Redux, Stripe
+    Features: User auth, payment gateway, admin dashboard
+    Status: ✓ Completed
+
+<span class="success">[2] Social Media Dashboard</span>
+    Tech: React, Node.js, MongoDB, Socket.io
+    Features: Real-time chat, post sharing, likes/comments
+    Status: ✓ Completed
+
+<span class="success">[3] Task Management App</span>
+    Tech: Next.js, Express, PostgreSQL
+    Features: Drag-drop, team collaboration, notifications
+    Status: 🔄 In Progress
+
+<span class="success">[4] Portfolio Website</span>
+    Tech: HTML, CSS, JavaScript, Tailwind
+    Features: Multi-theme, interactive demos, terminal
+    Status: ✓ Completed (You're here!)
+
+<span class="info">Total Projects Completed: 50+</span>`,
+
+        contact: () => `
+<span class="info">╔══════════════════════════════════════════╗
+║        CONTACT INFORMATION               ║
+╚══════════════════════════════════════════╝</span>
+
+<span class="success">📧 Email:</span> sanim@example.com
+<span class="success">📱 Phone:</span> +880 1991 523289
+<span class="success">🌍 Location:</span> Dhaka, Bangladesh
+
+<span class="info">Preferred Contact Method: Email
+Response Time: Usually within 24 hours</span>`,
+
+        experience: () => `
+<span class="info">╔══════════════════════════════════════════╗
+║        WORK EXPERIENCE                   ║
+╚══════════════════════════════════════════╝</span>
+
+<span class="success">Freelance MERN Stack Developer</span>
+📅 2023 - Present
+   • Developed 50+ full-stack web applications
+   • Worked with 30+ satisfied clients
+   • Specialized in MERN stack & modern JS frameworks
+
+<span class="success">Junior Web Developer</span>
+📅 2022 - 2023
+   • Built responsive websites using HTML, CSS, JavaScript
+   • Collaborated with design team on UI/UX
+   • Learned React, Node.js, and MongoDB`,
+
+        education: () => `
+<span class="info">╔══════════════════════════════════════════╗
+║          EDUCATION                       ║
+╚══════════════════════════════════════════╝</span>
+
+<span class="success">🎓 Bachelor of Science in Computer Science</span>
+   University of Dhaka
+   📅 2020 - 2024
+
+<span class="success">📚 Certifications:</span>
+   ✓ MERN Stack Development (Udemy)
+   ✓ Advanced JavaScript (freeCodeCamp)
+   ✓ React & Redux Masterclass
+   ✓ Node.js Complete Guide`,
+
+        social: () => `
+<span class="info">╔══════════════════════════════════════════╗
+║        SOCIAL MEDIA LINKS                ║
+╚══════════════════════════════════════════╝</span>
+
+<span class="success">🐙 GitHub:</span> github.com/sanimahmed
+<span class="success">💼 LinkedIn:</span> linkedin.com/in/sanimahmed
+<span class="success">🐦 Twitter:</span> twitter.com/sanimahmed
+<span class="success">📸 Instagram:</span> instagram.com/sanimahmed
+
+<span class="info">Follow me for updates on projects and tech content!</span>`,
+
+        clear: () => {
+          output.innerHTML = "";
+          return "";
+        },
+
+        ls: () => `
+<span class="success">drwxr-xr-x</span>  2 sanim sanim 4096 Nov  7 2025 <span class="info">about/</span>
+<span class="success">drwxr-xr-x</span>  2 sanim sanim 4096 Nov  7 2025 <span class="info">projects/</span>
+<span class="success">drwxr-xr-x</span>  2 sanim sanim 4096 Nov  7 2025 <span class="info">skills/</span>
+<span class="success">drwxr-xr-x</span>  2 sanim sanim 4096 Nov  7 2025 <span class="info">contact/</span>
+<span class="success">-rw-r--r--</span>  1 sanim sanim 2048 Nov  7 2025 README.md
+<span class="success">-rw-r--r--</span>  1 sanim sanim 1024 Nov  7 2025 resume.pdf`,
+
+        whoami: () => `<span class="success">visitor</span>`,
+
+        date: () => `<span class="success">${new Date().toString()}</span>`,
+
+        matrix: () => {
+          startMatrix();
+          setTimeout(stopMatrix, 5000);
+          return `<span class="info">Entering the Matrix... (Press any key to exit)</span>`;
+        },
+
+        hack: () => {
+          simulateHack();
+          return "";
+        },
+
+        exit: () => {
+          window.location.href = "../index.html";
+          return '<span class="info">Exiting terminal... Returning to portfolio</span>';
+        },
+      };
+
+      terminalInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const command = terminalInput.value.trim().toLowerCase();
+          if (command) {
+            commandHistory.push(command);
+            historyIndex = commandHistory.length;
+            executeCommand(command);
+            terminalInput.value = "";
+          }
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (historyIndex > 0) {
+            historyIndex--;
+            terminalInput.value = commandHistory[historyIndex];
+          }
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            terminalInput.value = commandHistory[historyIndex];
+          } else {
+            historyIndex = commandHistory.length;
+            terminalInput.value = "";
+          }
+        }
+      });
+
+      function executeCommand(cmd) {
+        // Add command to output
+        const cmdLine = document.createElement("div");
+        cmdLine.className = "terminal-line";
+        cmdLine.innerHTML = `<span class="terminal-prompt">visitor@portfolio:~$ </span>${cmd}`;
+        output.appendChild(cmdLine);
+
+        // Execute command
+        const result = document.createElement("div");
+        result.className = "command-output";
+
+        if (commands[cmd]) {
+          result.innerHTML = commands[cmd]();
+        } else {
+          result.innerHTML = `<span class="error">Command not found: ${cmd}</span>\n<span class="info">Type 'help' for available commands</span>`;
+        }
+
+        output.appendChild(result);
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+      }
+
+      function closeTerminal() {
+        window.location.href = "../index.html";
+      }
+
+      // Matrix Effect
+      const canvas = document.getElementById("matrixCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+      const fontSize = 16;
+      const columns = canvas.width / fontSize;
+      const drops = [];
+
+      for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
+      }
+
+      let matrixInterval;
+
+      function drawMatrix() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0F0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = matrix[Math.floor(Math.random() * matrix.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      function startMatrix() {
+        canvas.style.opacity = "0.5";
+        matrixInterval = setInterval(drawMatrix, 35);
+      }
+
+      function stopMatrix() {
+        clearInterval(matrixInterval);
+        canvas.style.opacity = "0.1";
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      // Simulate Hacking
+      async function simulateHack() {
+        const sequences = [
+          '<span class="warning">Initializing hack sequence...</span>',
+          '<span class="info">Connecting to server: 192.168.1.1</span>',
+          '<span class="success">Connection established!</span>',
+          '<span class="info">Bypassing firewall...</span>',
+          '<span class="success">Firewall bypassed!</span>',
+          '<span class="info">Accessing database...</span>',
+          '<span class="warning">Downloading files...</span>',
+          '<span class="success">████████████████░░░░ 80%</span>',
+          '<span class="success">██████████████████░░ 90%</span>',
+          '<span class="success">████████████████████ 100%</span>',
+          '<span class="success">✓ Hack completed successfully!</span>',
+          '<span class="info">Just kidding! This is just a simulation 😄</span>',
+        ];
+
+        for (const seq of sequences) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          const line = document.createElement("div");
+          line.className = "command-output";
+          line.innerHTML = seq;
+          output.appendChild(line);
+          terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+      }
+
+      // Start subtle matrix effect
+      setInterval(drawMatrix, 50);
+
+      // Keep focus on input
+      document.addEventListener("click", () => {
+        terminalInput.focus();
+      });
+
+      // Show welcome message after short delay
+      setTimeout(() => {
+        terminalInput.focus();
+      }, 500);
+    </script>
+  </body>
+</html>

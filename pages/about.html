@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Me - Sanim Ahmed</title>
+    <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/advanced-themes.css" />
+    <style>
+      body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: "Nunito", sans-serif;
+        overflow-x: hidden;
+      }
+
+      .about-hero {
+        height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary) 0%,
+          var(--bg-primary) 100%
+        );
+      }
+
+      .timeline {
+        position: relative;
+        max-width: 1200px;
+        margin: 50px auto;
+      }
+
+      .timeline::after {
+        content: "";
+        position: absolute;
+        width: 4px;
+        background: var(--gradient-primary);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -2px;
+      }
+
+      .timeline-item {
+        padding: 20px 40px;
+        position: relative;
+        background: inherit;
+        width: 50%;
+      }
+
+      .timeline-item::after {
+        content: "";
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        right: -13px;
+        background: var(--accent-primary);
+        border: 4px solid var(--bg-primary);
+        top: 25px;
+        border-radius: 50%;
+        z-index: 1;
+        box-shadow: var(--shadow-glow);
+      }
+
+      .timeline-left {
+        left: 0;
+      }
+
+      .timeline-right {
+        left: 50%;
+      }
+
+      .timeline-right::after {
+        left: -13px;
+      }
+
+      .timeline-content {
+        padding: 25px;
+        background: var(--bg-card);
+        position: relative;
+        border-radius: 15px;
+        border: 2px solid var(--accent-secondary);
+        transition: all 0.3s ease;
+      }
+
+      .timeline-content:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .radar-chart {
+        width: 100%;
+        max-width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .radar-bg {
+        fill: none;
+        stroke: var(--accent-secondary);
+        stroke-width: 1;
+        opacity: 0.3;
+      }
+
+      .radar-line {
+        fill: var(--accent-primary);
+        fill-opacity: 0.3;
+        stroke: var(--accent-primary);
+        stroke-width: 2;
+      }
+
+      .radar-point {
+        fill: var(--accent-primary);
+        stroke: var(--bg-primary);
+        stroke-width: 2;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        padding: 30px;
+        border-radius: 20px;
+        border: 2px solid var(--accent-primary);
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        margin: 30px 0;
+      }
+
+      .tech-badge {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        padding: 12px 24px;
+        border-radius: 25px;
+        border: 2px solid var(--accent-secondary);
+        font-weight: bold;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .tech-badge:hover {
+        transform: scale(1.1) rotate(5deg);
+        border-color: var(--accent-primary);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .github-stats {
+        background: var(--bg-card);
+        padding: 30px;
+        border-radius: 20px;
+        border: 2px solid var(--accent-tertiary);
+        margin: 30px 0;
+      }
+
+      .progress-ring {
+        width: 150px;
+        height: 150px;
+        margin: 20px;
+      }
+
+      .progress-ring-circle {
+        transition: stroke-dashoffset 1s ease;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+      }
+
+      .story-section {
+        background: var(--bg-card);
+        padding: 50px;
+        border-radius: 30px;
+        margin: 50px 0;
+        border: 2px solid var(--accent-primary);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .story-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: var(--gradient-primary);
+      }
+
+      @media (max-width: 768px) {
+        .timeline::after {
+          left: 31px;
+        }
+
+        .timeline-item {
+          width: 100%;
+          padding-left: 70px;
+          padding-right: 25px;
+        }
+
+        .timeline-item::after {
+          left: 18px;
+        }
+
+        .timeline-right {
+          left: 0%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Theme Picker -->
+    <div class="theme-picker">
+      <div class="theme-picker-toggle" onclick="toggleThemePicker()">🎨</div>
+      <div class="theme-option theme-dark" data-theme="dark" title="Dark"></div>
+      <div
+        class="theme-option theme-light"
+        data-theme="light"
+        title="Light"
+      ></div>
+      <div
+        class="theme-option theme-cyberpunk"
+        data-theme="cyberpunk"
+        title="Cyberpunk"
+      ></div>
+      <div
+        class="theme-option theme-ocean"
+        data-theme="ocean"
+        title="Ocean"
+      ></div>
+      <div
+        class="theme-option theme-forest"
+        data-theme="forest"
+        title="Forest"
+      ></div>
+      <div
+        class="theme-option theme-sunset"
+        data-theme="sunset"
+        title="Sunset"
+      ></div>
+      <div class="theme-option theme-neon" data-theme="neon" title="Neon"></div>
+      <div
+        class="theme-option theme-dracula"
+        data-theme="dracula"
+        title="Dracula"
+      ></div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="about-hero">
+      <div class="text-center">
+        <h1
+          class="text-6xl font-bold mb-4"
+          style="color: var(--accent-primary)"
+        >
+          About Me
+        </h1>
+        <p class="text-2xl opacity-80">
+          MERN Stack Developer | Problem Solver | Tech Enthusiast
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-20">
+      <!-- Personal Story -->
+      <div class="story-section">
+        <h2
+          class="text-4xl font-bold mb-8 text-center"
+          style="color: var(--accent-primary)"
+        >
+          📖 My Journey
+        </h2>
+        <div class="text-lg leading-relaxed space-y-6">
+          <p>
+            Hello! I'm
+            <span class="font-bold" style="color: var(--accent-primary)"
+              >Sanim Ahmed</span
+            >, a passionate MERN Stack Developer based in Dhaka, Bangladesh. My
+            journey into web development started with a curiosity about how
+            websites work, and it has evolved into a full-fledged career
+            building amazing digital experiences.
+          </p>
+          <p>
+            I specialize in creating
+            <span class="font-bold"
+              >modern, responsive, and user-friendly web applications</span
+            >
+            using cutting-edge technologies. From designing intuitive interfaces
+            to building robust backend systems, I love every aspect of the
+            development process.
+          </p>
+          <p>
+            When I'm not coding, you'll find me exploring new technologies,
+            contributing to open-source projects, or sharing knowledge with the
+            developer community. I believe in continuous learning and staying
+            updated with the latest industry trends.
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistics Grid -->
+      <h2
+        class="text-4xl font-bold mb-12 text-center"
+        style="color: var(--accent-secondary)"
+      >
+        📊 By The Numbers
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-20">
+        <div class="stat-card">
+          <div class="stat-number" id="yearsExp">3</div>
+          <p class="text-xl mt-2 opacity-80">Years Experience</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="projectsCount">50+</div>
+          <p class="text-xl mt-2 opacity-80">Projects Completed</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="clientsCount">30+</div>
+          <p class="text-xl mt-2 opacity-80">Happy Clients</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="techCount">15+</div>
+          <p class="text-xl mt-2 opacity-80">Technologies</p>
+        </div>
+      </div>
+
+      <!-- Tech Stack -->
+      <h2
+        class="text-4xl font-bold mb-12 text-center"
+        style="color: var(--accent-tertiary)"
+      >
+        💻 Tech Stack
+      </h2>
+      <div class="tech-stack">
+        <div class="tech-badge">React.js</div>
+        <div class="tech-badge">Node.js</div>
+        <div class="tech-badge">Express.js</div>
+        <div class="tech-badge">MongoDB</div>
+        <div class="tech-badge">JavaScript</div>
+        <div class="tech-badge">TypeScript</div>
+        <div class="tech-badge">Tailwind CSS</div>
+        <div class="tech-badge">HTML5</div>
+        <div class="tech-badge">CSS3</div>
+        <div class="tech-badge">Git</div>
+        <div class="tech-badge">REST APIs</div>
+        <div class="tech-badge">GraphQL</div>
+        <div class="tech-badge">Next.js</div>
+        <div class="tech-badge">Redux</div>
+        <div class="tech-badge">Figma</div>
+      </div>
+
+      <!-- Skills Radar Chart -->
+      <h2
+        class="text-4xl font-bold mb-12 mt-20 text-center"
+        style="color: var(--accent-primary)"
+      >
+        🎯 Skills Breakdown
+      </h2>
+      <div class="radar-chart">
+        <svg viewBox="0 0 400 400" id="radarChart">
+          <!-- Will be generated by JavaScript -->
+        </svg>
+      </div>
+
+      <!-- Journey Timeline -->
+      <h2
+        class="text-4xl font-bold mb-12 mt-20 text-center"
+        style="color: var(--accent-secondary)"
+      >
+        🚀 My Journey Timeline
+      </h2>
+      <div class="timeline">
+        <div class="timeline-item timeline-left">
+          <div class="timeline-content">
+            <h3
+              class="text-2xl font-bold mb-2"
+              style="color: var(--accent-primary)"
+            >
+              2022
+            </h3>
+            <h4 class="text-xl font-semibold mb-2">Started Web Development</h4>
+            <p class="opacity-80">
+              Began learning HTML, CSS, and JavaScript. Built my first website
+              and fell in love with web development.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-right">
+          <div class="timeline-content">
+            <h3
+              class="text-2xl font-bold mb-2"
+              style="color: var(--accent-primary)"
+            >
+              2023
+            </h3>
+            <h4 class="text-xl font-semibold mb-2">Mastered MERN Stack</h4>
+            <p class="opacity-80">
+              Completed comprehensive MERN stack training. Built multiple
+              full-stack applications and started freelancing.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-left">
+          <div class="timeline-content">
+            <h3
+              class="text-2xl font-bold mb-2"
+              style="color: var(--accent-primary)"
+            >
+              2024
+            </h3>
+            <h4 class="text-xl font-semibold mb-2">Professional Developer</h4>
+            <p class="opacity-80">
+              Worked with 30+ clients, delivered 50+ projects. Expanded skills
+              to include TypeScript, Next.js, and advanced optimization
+              techniques.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-right">
+          <div class="timeline-content">
+            <h3
+              class="text-2xl font-bold mb-2"
+              style="color: var(--accent-primary)"
+            >
+              2025
+            </h3>
+            <h4 class="text-xl font-semibold mb-2">Innovation & Growth</h4>
+            <p class="opacity-80">
+              Focusing on cutting-edge technologies, mentoring junior
+              developers, and building innovative solutions for complex
+              problems.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GitHub Stats -->
+      <h2
+        class="text-4xl font-bold mb-12 mt-20 text-center"
+        style="color: var(--accent-tertiary)"
+      >
+        📈 GitHub Activity
+      </h2>
+      <div class="github-stats">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div>
+            <svg class="progress-ring mx-auto">
+              <circle
+                class="radar-bg"
+                cx="75"
+                cy="75"
+                r="60"
+                stroke-width="8"
+              />
+              <circle
+                class="progress-ring-circle"
+                cx="75"
+                cy="75"
+                r="60"
+                stroke="url(#gradient1)"
+                stroke-width="8"
+                fill="none"
+                stroke-dasharray="377"
+                stroke-dashoffset="94"
+              />
+              <text
+                x="75"
+                y="80"
+                text-anchor="middle"
+                fill="var(--text-primary)"
+                font-size="24"
+                font-weight="bold"
+              >
+                350+
+              </text>
+              <defs>
+                <linearGradient id="gradient1">
+                  <stop offset="0%" stop-color="var(--accent-primary)" />
+                  <stop offset="100%" stop-color="var(--accent-secondary)" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <p class="text-xl font-semibold mt-4">Commits</p>
+          </div>
+          <div>
+            <svg class="progress-ring mx-auto">
+              <circle
+                class="radar-bg"
+                cx="75"
+                cy="75"
+                r="60"
+                stroke-width="8"
+              />
+              <circle
+                class="progress-ring-circle"
+                cx="75"
+                cy="75"
+                r="60"
+                stroke="url(#gradient2)"
+                stroke-width="8"
+                fill="none"
+                stroke-dasharray="377"
+                stroke-dashoffset="188"
+              />
+              <text
+                x="75"
+                y="80"
+                text-anchor="middle"
+                fill="var(--text-primary)"
+                font-size="24"
+                font-weight="bold"
+              >
+                45+
+              </text>
+              <defs>
+                <linearGradient id="gradient2">
+                  <stop offset="0%" stop-color="var(--accent-secondary)" />
+                  <stop offset="100%" stop-color="var(--accent-tertiary)" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <p class="text-xl font-semibold mt-4">Repositories</p>
+          </div>
+          <div>
+            <svg class="progress-ring mx-auto">
+              <circle
+                class="radar-bg"
+                cx="75"
+                cy="75"
+                r="60"
+                stroke-width="8"
+              />
+              <circle
+                class="progress-ring-circle"
+                cx="75"
+                cy="75"
+                r="60"
+                stroke="url(#gradient3)"
+                stroke-width="8"
+                fill="none"
+                stroke-dasharray="377"
+                stroke-dashoffset="263"
+              />
+              <text
+                x="75"
+                y="80"
+                text-anchor="middle"
+                fill="var(--text-primary)"
+                font-size="24"
+                font-weight="bold"
+              >
+                120+
+              </text>
+              <defs>
+                <linearGradient id="gradient3">
+                  <stop offset="0%" stop-color="var(--accent-tertiary)" />
+                  <stop offset="100%" stop-color="var(--accent-primary)" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <p class="text-xl font-semibold mt-4">Stars Earned</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back to Portfolio -->
+      <div class="text-center mt-20">
+        <a
+          href="../index.html"
+          class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-12 py-4 rounded-full text-xl font-bold hover:scale-110 transition-transform"
+          style="text-decoration: none"
+        >
+          ← Back to Main Portfolio
+        </a>
+      </div>
+    </div>
+
+    <script src="../js/enhancements.js"></script>
+    <script src="../js/advanced-animations.js"></script>
+    <script src="../js/accessibility.js"></script>
+    <script>
+      // Radar Chart
+      function createRadarChart() {
+        const skills = [
+          { name: "Frontend", value: 95 },
+          { name: "Backend", value: 90 },
+          { name: "Database", value: 85 },
+          { name: "DevOps", value: 75 },
+          { name: "UI/UX", value: 88 },
+          { name: "Problem Solving", value: 92 },
+        ];
+
+        const svg = document.getElementById("radarChart");
+        const centerX = 200;
+        const centerY = 200;
+        const maxRadius = 150;
+        const levels = 5;
+        const angleStep = (Math.PI * 2) / skills.length;
+
+        // Draw background circles
+        for (let i = 1; i <= levels; i++) {
+          const radius = (maxRadius / levels) * i;
+          const circle = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+          );
+          circle.setAttribute("cx", centerX);
+          circle.setAttribute("cy", centerY);
+          circle.setAttribute("r", radius);
+          circle.setAttribute("class", "radar-bg");
+          svg.appendChild(circle);
+        }
+
+        // Draw axes and labels
+        skills.forEach((skill, i) => {
+          const angle = angleStep * i - Math.PI / 2;
+          const x = centerX + Math.cos(angle) * maxRadius;
+          const y = centerY + Math.sin(angle) * maxRadius;
+
+          // Axis line
+          const line = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+          );
+          line.setAttribute("x1", centerX);
+          line.setAttribute("y1", centerY);
+          line.setAttribute("x2", x);
+          line.setAttribute("y2", y);
+          line.setAttribute("stroke", "var(--accent-secondary)");
+          line.setAttribute("stroke-width", "1");
+          line.setAttribute("opacity", "0.3");
+          svg.appendChild(line);
+
+          // Label
+          const labelX = centerX + Math.cos(angle) * (maxRadius + 30);
+          const labelY = centerY + Math.sin(angle) * (maxRadius + 30);
+          const text = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+          );
+          text.setAttribute("x", labelX);
+          text.setAttribute("y", labelY);
+          text.setAttribute("text-anchor", "middle");
+          text.setAttribute("fill", "var(--text-primary)");
+          text.setAttribute("font-size", "14");
+          text.setAttribute("font-weight", "bold");
+          text.textContent = skill.name;
+          svg.appendChild(text);
+        });
+
+        // Draw data polygon
+        const points = skills
+          .map((skill, i) => {
+            const angle = angleStep * i - Math.PI / 2;
+            const radius = (skill.value / 100) * maxRadius;
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+            return `${x},${y}`;
+          })
+          .join(" ");
+
+        const polygon = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "polygon"
+        );
+        polygon.setAttribute("points", points);
+        polygon.setAttribute("class", "radar-line");
+        svg.appendChild(polygon);
+
+        // Draw data points
+        skills.forEach((skill, i) => {
+          const angle = angleStep * i - Math.PI / 2;
+          const radius = (skill.value / 100) * maxRadius;
+          const x = centerX + Math.cos(angle) * radius;
+          const y = centerY + Math.sin(angle) * radius;
+
+          const circle = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+          );
+          circle.setAttribute("cx", x);
+          circle.setAttribute("cy", y);
+          circle.setAttribute("r", "6");
+          circle.setAttribute("class", "radar-point");
+          svg.appendChild(circle);
+
+          // Percentage text
+          const text = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+          );
+          text.setAttribute("x", x);
+          text.setAttribute("y", y - 15);
+          text.setAttribute("text-anchor", "middle");
+          text.setAttribute("fill", "var(--accent-primary)");
+          text.setAttribute("font-size", "12");
+          text.setAttribute("font-weight", "bold");
+          text.textContent = `${skill.value}%`;
+          svg.appendChild(text);
+        });
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        createRadarChart();
+
+        // Animate timeline items
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        timelineItems.forEach((item) => {
+          item.style.opacity = "0";
+          item.style.transform = "translateY(50px)";
+          item.style.transition = "all 0.6s ease";
+          observer.observe(item);
+        });
+      });
+    </script>
+  </body>
+</html>
